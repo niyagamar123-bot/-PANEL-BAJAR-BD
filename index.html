@@ -7,178 +7,230 @@
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
   *{margin:0;padding:0;box-sizing:border-box;font-family: 'Hind Siliguri', sans-serif;}
-  body{background:#0d0d1a;color:#fff;}
+  body{background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);color:#fff;min-height:100vh;}
   .hidden{display:none !important;}
   
   /* Header */
-  header{background:#111827;padding:10px 15px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:50;}
-  .logo{display:flex;align-items:center;gap:8px;font-weight:700;font-size:18px;color:#8b5cf6;}
-  .logo img{width:35px;height:35px;border-radius:50%;}
-  .header-right{display:flex;gap:10px;align-items:center;}
-  .balance{background:#22c55e;padding:8px 15px;border-radius:20px;font-weight:bold;font-size:14px;}
+  header{background:rgba(17,24,39,0.9);padding:12px 15px;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(10px);position:sticky;top:0;z-index:50;}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:20px;color:#a78bfa;}
+  .logo img{width:40px;height:40px;border-radius:50%;border:2px solid #8b5cf6;}
+  .btn{padding:8px 15px;border-radius:20px;border:none;font-weight:600;cursor:pointer;}
+  .btn-pink{background:#ec4899;color:#fff;}
+  .btn-green{background:#22c55e;color:#000;}
   
-  /* Notice */
-  .notice{background:#dc2626;padding:10px;display:flex;align-items:center;gap:10px;border-radius:8px;margin:10px;}
+  /* Container */
+  .container{padding:15px;max-width:600px;margin:auto;}
   
-  /* Tabs */
-  .tabs{display:flex;gap:10px;padding:0 10px;margin:15px 0;}
-  .tab{flex:1;padding:10px;border-radius:25px;background:#1f2937;text-align:center;font-weight:600;cursor:pointer;}
-  .tab.active{background:linear-gradient(90deg,#8b5cf6,#3b82f6);}
+  /* Form */
+  .form-box{background:rgba(31,41,55,0.8);padding:25px;border-radius:15px;margin-top:20px;backdrop-filter:blur(10px);border:1px solid #4c1d95;}
+  .form-box h2{text-align:center;color:#a78bfa;margin-bottom:15px;}
+  .form-box input{width:100%;padding:12px;margin:10px 0;border-radius:10px;border:1px solid #4c1d95;background:#111827;color:#fff;}
   
   /* Products */
-  .products{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 10px 80px 10px;}
-  .card{background:#1f2937;border-radius:12px;overflow:hidden;}
-  .card img{width:100%;height:160px;object-fit:cover;}
-  .card-body{padding:10px;text-align:center;}
-  .card-title{font-size:14px;font-weight:600;margin-bottom:5px;}
-  .price{color:#22c55e;font-size:16px;font-weight:700;margin-bottom:8px;}
-  .btn-blue{background:linear-gradient(90deg,#3b82f6,#8b5cf6);color:#fff;border:none;padding:8px;border-radius:8px;width:100%;margin-bottom:6px;cursor:pointer;font-weight:600;}
-  .btn-pink{background:#ec4899;color:#fff;border:none;padding:8px;border-radius:8px;width:100%;cursor:pointer;font-weight:600;}
+  .products{display:grid;grid-template-columns:1fr 1fr;gap:15px;padding-bottom:80px;}
+  .card{background:rgba(31,41,55,0.8);border-radius:15px;overflow:hidden;border:1px solid #4c1d95;transition:0.3s;}
+  .card:hover{transform:translateY(-5px);border-color:#8b5cf6;}
+  .card img{width:100%;height:150px;object-fit:cover;}
+  .card-body{padding:12px;text-align:center;}
+  .card-title{font-weight:600;margin-bottom:5px;color:#c4b5fd;}
+  .price{color:#4ade80;font-size:18px;font-weight:700;margin:8px 0;}
   
   /* Bottom Nav */
-  .bottom-nav{position:fixed;bottom:0;left:0;width:100%;background:#111827;display:flex;justify-content:space-around;padding:10px 0;border-top:1px solid #222;}
-  .nav-item{text-align:center;font-size:11px;color:#aaa;cursor:pointer;}
-  .nav-item.active{color:#8b5cf6;}
+  .bottom-nav{position:fixed;bottom:0;left:0;width:100%;background:rgba(17,24,39,0.95);display:flex;justify-content:space-around;padding:10px 0;border-top:1px solid #4c1d95;}
+  .nav-item{text-align:center;font-size:12px;color:#a78bfa;cursor:pointer;}
+  .nav-item.active{color:#fff;font-weight:700;}
   
   /* Popup */
   .popup{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:100;justify-content:center;align-items:center;padding:15px;}
-  .popup-box{background:#1f2937;padding:20px;border-radius:12px;width:100%;max-width:400px;}
-  .popup-box h2{color:#22c55e;text-align:center;margin-bottom:10px;}
-  .pay-number{background:#111827;padding:15px;border-radius:8px;text-align:center;margin:10px 0;}
-  .pay-number b{font-size:22px;color:#22c55e;letter-spacing:1px;}
-  .popup-box input{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:1px solid #333;background:#111827;color:#fff;}
-  .submit{background:#22c55e;color:#000;padding:12px;border:none;border-radius:8px;width:100%;font-weight:700;cursor:pointer;}
-  
-  /* Admin Panel */
-  .admin-form{background:#1f2937;padding:20px;border-radius:12px;margin:10px;}
-  .admin-form input, .admin-form textarea{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:1px solid #333;background:#111827;color:#fff;}
+  .popup-box{background:#1f2937;padding:25px;border-radius:15px;width:100%;border:1px solid #8b5cf6;}
+  .pay-number{background:#111827;padding:15px;border-radius:10px;text-align:center;margin:15px 0;border:1px dashed #22c55e;}
+  .pay-number b{font-size:24px;color:#4ade80;}
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<header>
-  <div class="logo"><img src="https://i.pravatar.cc/100"> NIYAZ BAJAR</div>
-  <div class="header-right">
-    <div class="balance">0৳</div>
-  </div>
-</header>
-
-<!-- MAIN CONTENT -->
-<div id="userPanel">
-  <div class="notice">● 24 ঘন্টা সার্ভিস খোলা আছে</div>
-
-  <div class="tabs">
-    <div class="tab active" onclick="filterTab('all')">ALL</div>
-    <div class="tab" onclick="filterTab('non')">NON ROOT</div>
-    <div class="tab" onclick="filterTab('vip')">VIP</div>
+<!-- LOGIN / REGISTER -->
+<div id="authPage" class="container">
+  <div class="form-box" id="loginForm">
+    <h2>LOGIN</h2>
+    <input type="email" id="loginEmail" placeholder="Email">
+    <input type="password" id="loginPass" placeholder="Password">
+    <button class="btn btn-pink" style="width:100%" onclick="login()">LOGIN</button>
+    <p style="text-align:center;margin-top:10px;">Account নাই? <a href="#" onclick="showRegister()" style="color:#a78bfa;">Register</a></p>
   </div>
 
-  <div class="products" id="productList">
-    <!-- Product 1 -->
-    <div class="card" data-cat="non">
-      <img src="https://via.placeholder.com/400x160/3b82f6/fff?text=PRODUCT+1" alt="">
-      <div class="card-body">
-        <div class="card-title">PREMIUM TOOL</div>
-        <div class="price">PRICE 25৳</div>
-        <button class="btn-blue" onclick="window.open('https://youtube.com', '_blank')">FILE & SETUP</button>
-        <button class="btn-pink" onclick="openPopup('PREMIUM TOOL', '25')">BUY NOW</button>
-      </div>
-    </div>
-
-    <!-- Product 2 -->
-    <div class="card" data-cat="vip">
-      <img src="https://via.placeholder.com/400x160/ec4899/fff?text=PRODUCT+2" alt="">
-      <div class="card-body">
-        <div class="card-title">VIP ACCESS</div>
-        <div class="price">PRICE 30৳</div>
-        <button class="btn-blue" onclick="window.open('https://youtube.com', '_blank')">FILE & SETUP</button>
-        <button class="btn-pink" onclick="openPopup('VIP ACCESS', '30')">BUY NOW</button>
-      </div>
-    </div>
+  <div class="form-box hidden" id="registerForm">
+    <h2>REGISTER</h2>
+    <input type="text" id="regName" placeholder="তোমার নাম">
+    <input type="email" id="regEmail" placeholder="Email">
+    <input type="password" id="regPass" placeholder="Password">
+    <button class="btn btn-green" style="width:100%" onclick="register()">REGISTER</button>
+    <p style="text-align:center;margin-top:10px;">Account আছে? <a href="#" onclick="showLogin()" style="color:#a78bfa;">Login</a></p>
   </div>
 </div>
 
-<!-- ADMIN PANEL - Secret Page -->
+<!-- CUSTOMER PANEL -->
+<div id="customerPanel" class="hidden">
+<header>
+  <div class="logo"><img id="siteLogo" src="https://i.pravatar.cc/100"> NIYAZ BAJAR</div>
+  <button class="btn btn-pink" onclick="logout()">Logout</button>
+</header>
+
+<div class="container">
+  <div id="homePage">
+    <h2 style="text-align:center;margin:15px 0;color:#a78bfa;">আমাদের প্রোডাক্ট</h2>
+    <div class="products" id="productList"></div>
+  </div>
+
+  <div id="orderPage" class="hidden">
+    <h2 style="text-align:center;margin:15px 0;color:#a78bfa;">My Orders</h2>
+    <div id="orderList" style="background:rgba(31,41,55,0.8);padding:15px;border-radius:12px;">কোনো অর্ডার নাই</div>
+  </div>
+</div>
+
+<div class="bottom-nav">
+  <div class="nav-item active" onclick="showPage('homePage')">Home</div>
+  <div class="nav-item" onclick="showPage('orderPage')">My Order</div>
+  <div class="nav-item" onclick="showAdmin()">Admin</div>
+</div>
+</div>
+
+<!-- ADMIN PANEL -->
 <div id="adminPanel" class="hidden">
-  <h2 style="text-align:center;color:#8b5cf6;margin:15px 0;">Admin Panel</h2>
-  <div class="admin-form">
-    <h3>নতুন প্রোডাক্ট অ্যাড করুন</h3>
+<header>
+  <div class="logo">🔒 ADMIN PANEL</div>
+  <button class="btn btn-pink" onclick="backToCustomer()">Back</button>
+</header>
+<div class="container">
+  <div class="form-box">
+    <h2>নতুন প্রোডাক্ট অ্যাড</h2>
     <input type="text" id="pName" placeholder="Product Name">
     <input type="number" id="pPrice" placeholder="Price">
     <input type="text" id="pImg" placeholder="Image Link">
-    <input type="text" id="pVideo" placeholder="Youtube Setup Video Link">
-    <button class="submit" onclick="addProduct()">Add Product</button>
+    <input type="text" id="pVideo" placeholder="Youtube Setup Link">
+    <button class="btn btn-green" style="width:100%" onclick="addProduct()">Add Product</button>
+    <hr style="margin:15px 0;border-color:#4c1d95;">
+    <h3>Logo Change</h3>
+    <input type="text" id="logoLink" placeholder="তোমার Logo Image Link">
+    <button class="btn btn-pink" style="width:100%" onclick="changeLogo()">Logo Update</button>
   </div>
+</div>
 </div>
 
 <!-- PAYMENT POPUP -->
 <div class="popup" id="paymentPopup">
   <div class="popup-box">
-    <h2>Payment করুন</h2>
+    <h2 style="color:#4ade80;text-align:center;">Payment</h2>
     <p id="pNameText"></p>
     <p><b>Price: <span id="pPriceText"></span>৳</b></p>
     <div class="pay-number">
-      <p>bKash / Nagad এ Send Money করুন</p>
+      <p>bKash / Nagad Send Money:</p>
       <b>01908807313</b>
     </div>
-    <input type="text" id="trx" placeholder="Transaction ID দিন">
-    <input type="text" id="num" placeholder="আপনার নাম্বার দিন">
-    <button class="submit" onclick="submitOrder()">Submit Order</button>
+    <input type="text" id="trx" placeholder="Transaction ID">
+    <button class="btn btn-green" style="width:100%" onclick="submitOrder()">Submit Order</button>
     <button onclick="closePopup()" style="width:100%;margin-top:8px;padding:10px;background:#444;border:none;border-radius:8px;color:#fff;">Cancel</button>
   </div>
 </div>
 
-<!-- BOTTOM NAV -->
-<div class="bottom-nav">
-  <div class="nav-item active" onclick="showUser()">Home</div>
-  <div class="nav-item">Add Fund</div>
-  <div class="nav-item">My Order</div>
-  <div class="nav-item">My Keys</div>
-  <div class="nav-item" onclick="showAdmin()">Account</div>
-</div>
-
 <script>
-// Admin Panel Password
-let ADMIN_PASSWORD = "niyaZ123"; // এইটা চেঞ্জ করে দাও
+let products = JSON.parse(localStorage.getItem('products')) || [];
+let orders = JSON.parse(localStorage.getItem('orders')) || [];
+let currentUser = localStorage.getItem('currentUser');
+let ADMIN_PASS = "niyaZ@123"; // এইটা চেঞ্জ করো
 
-function showAdmin(){
-  let pass = prompt("Admin Password দিন:");
-  if(pass == ADMIN_PASSWORD){
-    document.getElementById('userPanel').classList.add('hidden');
-    document.getElementById('adminPanel').classList.remove('hidden');
-  } else {
-    alert("Wrong Password!");
+// Check Login
+if(currentUser){ showCustomer(); loadProducts(); loadOrders(); }
+
+function showRegister(){ document.getElementById('loginForm').classList.add('hidden'); document.getElementById('registerForm').classList.remove('hidden'); }
+function showLogin(){ document.getElementById('registerForm').classList.add('hidden'); document.getElementById('loginForm').classList.remove('hidden'); }
+
+function register(){
+  localStorage.setItem('currentUser', document.getElementById('regName').value);
+  alert('Register Success!');
+  showLogin();
+}
+function login(){
+  if(document.getElementById('loginEmail').value){
+    localStorage.setItem('currentUser', 'User');
+    showCustomer();
   }
 }
-function showUser(){
+function logout(){ localStorage.removeItem('currentUser'); location.reload(); }
+
+function showCustomer(){ 
+  document.getElementById('authPage').classList.add('hidden');
+  document.getElementById('customerPanel').classList.remove('hidden');
+}
+function showPage(page){
+  document.getElementById('homePage').classList.add('hidden');
+  document.getElementById('orderPage').classList.add('hidden');
+  document.getElementById(page).classList.remove('hidden');
+}
+function showAdmin(){
+  let pass = prompt("Admin Password:");
+  if(pass == ADMIN_PASS){
+    document.getElementById('customerPanel').classList.add('hidden');
+    document.getElementById('adminPanel').classList.remove('hidden');
+  }
+}
+function backToCustomer(){ 
   document.getElementById('adminPanel').classList.add('hidden');
-  document.getElementById('userPanel').classList.remove('hidden');
+  document.getElementById('customerPanel').classList.remove('hidden');
 }
 
-// Add Product Function
 function addProduct(){
-  let name = document.getElementById('pName').value;
-  let price = document.getElementById('pPrice').value;
-  let img = document.getElementById('pImg').value;
-  let video = document.getElementById('pVideo').value;
-  
-  alert("Product Added: " + name + "\n" + price + "৳");
-  // এখানে আসলে Database এ সেভ হবে। HTML এ Static থাকবে
+  let p = {
+    name: document.getElementById('pName').value,
+    price: document.getElementById('pPrice').value,
+    img: document.getElementById('pImg').value,
+    video: document.getElementById('pVideo').value
+  };
+  products.push(p);
+  localStorage.setItem('products', JSON.stringify(products));
+  alert('Product Added!');
+  loadProducts();
+}
+function loadProducts(){
+  let html = '';
+  products.forEach((p,i)=>{
+    html += `<div class="card">
+      <img src="${p.img}">
+      <div class="card-body">
+        <div class="card-title">${p.name}</div>
+        <div class="price">${p.price}৳</div>
+        <button class="btn" style="background:#3b82f6;color:#fff;width:100%;margin-bottom:5px;" onclick="window.open('${p.video}')">FILE & SETUP</button>
+        <button class="btn btn-pink" style="width:100%" onclick="openPopup('${p.name}','${p.price}')">BUY NOW</button>
+      </div>
+    </div>`;
+  });
+  document.getElementById('productList').innerHTML = html;
 }
 
-// Payment Popup
 function openPopup(name, price){
   document.getElementById('pNameText').innerText = 'Product: ' + name;
   document.getElementById('pPriceText').innerText = price;
   document.getElementById('paymentPopup').style.display = 'flex';
+  window.currentOrder = {name, price};
 }
 function closePopup(){ document.getElementById('paymentPopup').style.display = 'none'; }
 function submitOrder(){
   let trx = document.getElementById('trx').value;
-  if(trx == ''){ alert('Transaction ID দিন!'); return; }
-  alert('Order Received! 5 মিনিটের মধ্যে প্রোডাক্ট দেওয়া হবে।');
+  if(trx == ''){ alert('TrxID দিন!'); return; }
+  orders.push({...window.currentOrder, trx, date:new Date().toLocaleString()});
+  localStorage.setItem('orders', JSON.stringify(orders));
+  alert('Order Submitted!');
+  loadOrders();
   closePopup();
+}
+function loadOrders(){
+  if(orders.length==0) return;
+  let html = '';
+  orders.forEach(o=>{ html += `<p><b>${o.name}</b> - ${o.price}৳ <br>Trx: ${o.trx} <br><small>${o.date}</small><hr></p>`; });
+  document.getElementById('orderList').innerHTML = html;
+}
+function changeLogo(){
+  document.getElementById('siteLogo').src = document.getElementById('logoLink').value;
 }
 </script>
 
