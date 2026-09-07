@@ -3,98 +3,156 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NIYAZ STORE - Digital Products</title>
+<title>NIYAZ BAJAR</title>
 <style>
-  *{margin:0;padding:0;box-sizing:border-box;font-family: 'Segoe UI', sans-serif;}
-  body{background:#0a0a0a;color:#fff;}
-  header{background:#111;padding:15px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #00ff88;}
-  header h1{color:#00ff88;font-size:22px;}
-  .profile{display:flex;align-items:center;gap:10px;}
-  .profile img{width:35px;height:35px;border-radius:50%;border:2px solid #00ff88;}
+  *{margin:0;padding:0;box-sizing:border-box;font-family: 'Hind Siliguri', sans-serif;}
+  body{background:#0d0d1a;color:#fff;}
+  .hidden{display:none;}
+  header{background:#111827;padding:10px 15px;display:flex;justify-content:space-between;align-items:center;}
+  .logo{font-weight:700;font-size:18px;color:#8b5cf6;}
+  .auth-btns button{background:#ec4899;color:#fff;border:none;padding:8px 15px;border-radius:20px;margin-left:8px;cursor:pointer;}
+  .balance{background:#22c55e;padding:8px 15px;border-radius:20px;font-weight:bold;}
   
-  .container{max-width:1200px;margin:20px auto;padding:0 15px;}
-  .banner{background:linear-gradient(90deg,#00ff88,#00d4ff);padding:20px;border-radius:12px;text-align:center;margin-bottom:20px;}
-  .banner h2{color:#000;font-size:24px;}
+  .container{padding:10px;max-width:500px;margin:auto;}
+  .form-box{background:#1f2937;padding:20px;border-radius:12px;margin-top:20px;}
+  .form-box h2{text-align:center;color:#8b5cf6;margin-bottom:15px;}
+  .form-box input{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:1px solid #333;background:#111827;color:#fff;}
+  .form-btn{background:#8b5cf6;color:#fff;padding:12px;border:none;border-radius:8px;width:100%;font-weight:700;cursor:pointer;}
   
-  .products{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;}
-  .card{background:#1a1a1a;border:1px solid #333;border-radius:12px;padding:15px;transition:0.3s;}
-  .card:hover{border-color:#00ff88;transform:translateY(-5px);}
-  .card img{width:100%;height:150px;object-fit:cover;border-radius:8px;}
-  .card h3{margin:10px 0;font-size:18px;color:#00ff88;}
-  .card p{font-size:14px;color:#aaa;margin-bottom:10px;}
-  .price{font-size:20px;font-weight:bold;color:#fff;}
-  .btn{background:#00ff88;color:#000;padding:10px;border:none;border-radius:8px;width:100%;font-weight:bold;cursor:pointer;margin-top:10px;}
-  .btn:hover{background:#00d4ff;}
+  .tabs{display:flex;gap:10px;margin:15px 0;}
+  .tab{flex:1;padding:10px;border-radius:25px;background:#1f2937;text-align:center;cursor:pointer;}
+  .tab.active{background:linear-gradient(90deg,#8b5cf6,#3b82f6);}
   
-  .recharge{background:#1a1a1a;padding:20px;border-radius:12px;margin-top:30px;border:1px solid #333;}
-  .recharge h2{color:#00ff88;margin-bottom:15px;}
-  .option{display:flex;justify-content:space-between;background:#222;padding:12px;border-radius:8px;margin:8px 0;}
-  .pay-btns{display:flex;gap:10px;margin-top:15px;}
-  .pay-btns button{background:#ff0080;color:#fff;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;}
+  .products{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding-bottom:80px;}
+  .card{background:#1f2937;border-radius:12px;overflow:hidden;}
+  .card img{width:100%;height:140px;object-fit:cover;}
+  .card-body{padding:10px;text-align:center;}
+  .price{color:#22c55e;font-weight:700;margin:5px 0;}
+  .btn-blue{background:linear-gradient(90deg,#3b82f6,#8b5cf6);color:#fff;border:none;padding:8px;border-radius:8px;width:100%;margin-bottom:6px;cursor:pointer;}
+  .btn-pink{background:#ec4899;color:#fff;border:none;padding:8px;border-radius:8px;width:100%;cursor:pointer;}
   
-  footer{text-align:center;padding:20px;color:#666;margin-top:30px;border-top:1px solid #222;}
+  .popup{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:100;justify-content:center;align-items:center;padding:15px;}
+  .popup-box{background:#1f2937;padding:20px;border-radius:12px;width:100%;}
+  .pay-number{background:#111827;padding:15px;border-radius:8px;text-align:center;margin:10px 0;}
+  .pay-number b{font-size:22px;color:#22c55e;}
+  
+  .bottom-nav{position:fixed;bottom:0;left:0;width:100%;background:#111827;display:flex;justify-content:space-around;padding:10px 0;}
 </style>
 </head>
 <body>
 
-<header>
-  <h1>NIYAZ STORE</h1>
-  <div class="profile">
-    <span>Md Niyaz</span>
-    <img src="https://i.pravatar.cc/100" alt="profile">
+<!-- 1. LOGIN / REGISTER PAGE -->
+<div id="authPage" class="container">
+  <div class="form-box" id="loginForm">
+    <h2>LOGIN</h2>
+    <input type="email" id="loginEmail" placeholder="Email">
+    <input type="password" id="loginPass" placeholder="Password">
+    <button class="form-btn" onclick="login()">LOGIN</button>
+    <p style="text-align:center;margin-top:10px;">Account নাই? <a href="#" onclick="showRegister()" style="color:#8b5cf6;">Register</a></p>
   </div>
+
+  <div class="form-box hidden" id="registerForm">
+    <h2>REGISTER</h2>
+    <input type="text" id="regName" placeholder="নাম">
+    <input type="email" id="regEmail" placeholder="Email">
+    <input type="password" id="regPass" placeholder="Password">
+    <button class="form-btn" onclick="register()">REGISTER</button>
+    <p style="text-align:center;margin-top:10px;">Account আছে? <a href="#" onclick="showLogin()" style="color:#8b5cf6;">Login</a></p>
+  </div>
+</div>
+
+<!-- 2. MAIN SHOP PAGE -->
+<div id="shopPage" class="hidden">
+<header>
+  <div class="logo">NIYAZ BAJAR</div>
+  <div class="balance">0৳</div>
 </header>
 
 <div class="container">
-  <div class="banner">
-    <h2>🔥 100% SAFE & FAST DELIVERY 🔥</h2>
-    <p>Digital Products Store</p>
+  <div class="tabs">
+    <div class="tab active">NON ROOT</div>
+    <div class="tab">IPHONE</div>
+    <div class="tab">PC</div>
   </div>
 
   <div class="products">
+    <!-- PRODUCT 1 -->
     <div class="card">
-      <img src="https://via.placeholder.com/300x150/00ff88/000?text=PRODUCT+1" alt="">
-      <h3>PREMIUM APP</h3>
-      <p>100% Safe & Working</p>
-      <div class="price">25৳</div>
-      <button class="btn">Buy Now</button>
+      <img src="https://via.placeholder.com/400x140/3b82f6/fff?text=PRODUCT+1" alt="">
+      <div class="card-body">
+        <div>PREMIUM TOOL</div>
+        <div class="price">25৳</div>
+        <button class="btn-blue" onclick="window.open('https://youtube.com', '_blank')">FILE & SETUP</button>
+        <button class="btn-pink" onclick="openPopup('PREMIUM TOOL', '25')">BUY NOW</button>
+      </div>
     </div>
-
-    <div class="card">
-      <img src="https://via.placeholder.com/300x150/00d4ff/000?text=PRODUCT+2" alt="">
-      <h3>VIP TOOL</h3>
-      <p>100% Safe & Working</p>
-      <div class="price">30৳</div>
-      <button class="btn">Buy Now</button>
-    </div>
-
-    <div class="card">
-      <img src="https://via.placeholder.com/300x150/ff0080/fff?text=PRODUCT+3" alt="">
-      <h3>PRO SUBSCRIPTION</h3>
-      <p>100% Safe & Working</p>
-      <div class="price">50৳</div>
-      <button class="btn">Buy Now</button>
-    </div>
-  </div>
-
-  <div class="recharge">
-    <h2>Recharge Plans</h2>
-    <div class="option"><span>1 HOUR</span><span>25৳</span></div>
-    <div class="option"><span>1 DAY</span><span>290৳</span></div>
-    <div class="option"><span>7 DAYS</span><span>2100৳</span></div>
     
-    <h3 style="margin-top:15px;">Payment Method</h3>
-    <div class="pay-btns">
-      <button>bKash</button>
-      <button>Nagad</button>
-      <button>Rocket</button>
+    <!-- PRODUCT 2 -->
+    <div class="card">
+      <img src="https://via.placeholder.com/400x140/ec4899/fff?text=PRODUCT+2" alt="">
+      <div class="card-body">
+        <div>VIP ACCESS</div>
+        <div class="price">30৳</div>
+        <button class="btn-blue" onclick="window.open('https://youtube.com', '_blank')">FILE & SETUP</button>
+        <button class="btn-pink" onclick="openPopup('VIP ACCESS', '30')">BUY NOW</button>
+      </div>
     </div>
   </div>
 </div>
 
-<footer>
-  © 2026 NIYAZ STORE | All Rights Reserved
-</footer>
+<div class="bottom-nav">
+  <div>Home</div><div>Add Fund</div><div>My Order</div><div>My Keys</div><div>Account</div>
+</div>
+</div>
+
+<!-- 3. PAYMENT POPUP -->
+<div class="popup" id="paymentPopup">
+  <div class="popup-box">
+    <h2 style="color:#22c55e;text-align:center;">Payment</h2>
+    <p id="pName"></p>
+    <p><b>Price: <span id="pPrice"></span>৳</b></p>
+    <div class="pay-number">
+      <p>bKash / Nagad Send Money:</p>
+      <b>01908807313</b>
+    </div>
+    <input type="text" id="trx" placeholder="Transaction ID দিন">
+    <input type="text" id="num" placeholder="আপনার নাম্বার দিন">
+    <button class="form-btn" onclick="submitOrder()">Submit Order</button>
+    <button onclick="closePopup()" style="width:100%;margin-top:8px;padding:10px;background:#444;border:none;border-radius:8px;color:#fff;">Cancel</button>
+  </div>
+</div>
+
+<script>
+// Fake Login System - LocalStorage এ সেভ হবে
+function showRegister(){ document.getElementById('loginForm').classList.add('hidden'); document.getElementById('registerForm').classList.remove('hidden'); }
+function showLogin(){ document.getElementById('registerForm').classList.add('hidden'); document.getElementById('loginForm').classList.remove('hidden'); }
+
+function register(){
+  let name = document.getElementById('regName').value;
+  localStorage.setItem('user', name);
+  alert('Register Success! Now Login');
+  showLogin();
+}
+function login(){
+  let email = document.getElementById('loginEmail').value;
+  if(email != ''){ 
+    document.getElementById('authPage').classList.add('hidden');
+    document.getElementById('shopPage').classList.remove('hidden');
+  } else { alert('Email দিন'); }
+}
+
+// Payment Popup
+function openPopup(name, price){
+  document.getElementById('pName').innerText = 'Product: ' + name;
+  document.getElementById('pPrice').innerText = price;
+  document.getElementById('paymentPopup').style.display = 'flex';
+}
+function closePopup(){ document.getElementById('paymentPopup').style.display = 'none'; }
+function submitOrder(){
+  alert('Order Received! TrxID চেক করে 5 মিনিটে প্রোডাক্ট দেওয়া হবে।');
+  closePopup();
+}
+</script>
 
 </body>
 </html>
