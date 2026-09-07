@@ -10,37 +10,32 @@
   body{background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);color:#fff;min-height:100vh;}
   .hidden{display:none !important;}
   
-  /* Header */
   header{background:rgba(17,24,39,0.9);padding:12px 15px;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(10px);position:sticky;top:0;z-index:50;}
   .logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:20px;color:#a78bfa;}
-  .logo img{width:40px;height:40px;border-radius:50%;border:2px solid #8b5cf6;}
+  .logo img{width:40px;height:40px;border-radius:50%;border:2px solid #8b5cf6;object-fit:cover;}
   .btn{padding:8px 15px;border-radius:20px;border:none;font-weight:600;cursor:pointer;}
   .btn-pink{background:#ec4899;color:#fff;}
   .btn-green{background:#22c55e;color:#000;}
+  .btn-red{background:#ef4444;color:#fff;font-size:12px;padding:5px 10px;}
   
-  /* Container */
   .container{padding:15px;max-width:600px;margin:auto;}
-  
-  /* Form */
   .form-box{background:rgba(31,41,55,0.8);padding:25px;border-radius:15px;margin-top:20px;backdrop-filter:blur(10px);border:1px solid #4c1d95;}
   .form-box h2{text-align:center;color:#a78bfa;margin-bottom:15px;}
   .form-box input{width:100%;padding:12px;margin:10px 0;border-radius:10px;border:1px solid #4c1d95;background:#111827;color:#fff;}
   
-  /* Products */
   .products{display:grid;grid-template-columns:1fr 1fr;gap:15px;padding-bottom:80px;}
-  .card{background:rgba(31,41,55,0.8);border-radius:15px;overflow:hidden;border:1px solid #4c1d95;transition:0.3s;}
+  .card{background:rgba(31,41,55,0.8);border-radius:15px;overflow:hidden;border:1px solid #4c1d95;transition:0.3s;position:relative;}
   .card:hover{transform:translateY(-5px);border-color:#8b5cf6;}
-  .card img{width:100%;height:150px;object-fit:cover;}
+  .card img{width:100%;height:150px;object-fit:cover;background:#111;}
   .card-body{padding:12px;text-align:center;}
   .card-title{font-weight:600;margin-bottom:5px;color:#c4b5fd;}
   .price{color:#4ade80;font-size:18px;font-weight:700;margin:8px 0;}
+  .delete-btn{position:absolute;top:8px;right:8px;}
   
-  /* Bottom Nav */
   .bottom-nav{position:fixed;bottom:0;left:0;width:100%;background:rgba(17,24,39,0.95);display:flex;justify-content:space-around;padding:10px 0;border-top:1px solid #4c1d95;}
   .nav-item{text-align:center;font-size:12px;color:#a78bfa;cursor:pointer;}
   .nav-item.active{color:#fff;font-weight:700;}
   
-  /* Popup */
   .popup{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:100;justify-content:center;align-items:center;padding:15px;}
   .popup-box{background:#1f2937;padding:25px;border-radius:15px;width:100%;border:1px solid #8b5cf6;}
   .pay-number{background:#111827;padding:15px;border-radius:10px;text-align:center;margin:15px 0;border:1px dashed #22c55e;}
@@ -72,7 +67,7 @@
 <!-- CUSTOMER PANEL -->
 <div id="customerPanel" class="hidden">
 <header>
-  <div class="logo"><img id="siteLogo" src="https://i.pravatar.cc/100"> NIYAZ BAJAR</div>
+  <div class="logo"><img id="siteLogo" src="https://i.ibb.co/93GhCsTx/xxx.jpg"> NIYAZ BAJAR</div>
   <button class="btn btn-pink" onclick="logout()">Logout</button>
 </header>
 
@@ -106,13 +101,19 @@
     <h2>নতুন প্রোডাক্ট অ্যাড</h2>
     <input type="text" id="pName" placeholder="Product Name">
     <input type="number" id="pPrice" placeholder="Price">
-    <input type="text" id="pImg" placeholder="Image Link">
+    <input type="text" id="pImg" placeholder="Image Direct Link - i.ibb.co">
     <input type="text" id="pVideo" placeholder="Youtube Setup Link">
     <button class="btn btn-green" style="width:100%" onclick="addProduct()">Add Product</button>
+    
     <hr style="margin:15px 0;border-color:#4c1d95;">
     <h3>Logo Change</h3>
-    <input type="text" id="logoLink" placeholder="তোমার Logo Image Link">
-    <button class="btn btn-pink" style="width:100%" onclick="changeLogo()">Logo Update</button>
+    <input type="text" id="logoLink" placeholder="তোমার Logo Direct Link">
+    <button class="btn btn-pink" style="width:100%" onclick="changeLogo()">Logo Update & Save</button>
+  </div>
+
+  <div class="form-box">
+    <h2>Product List - Delete</h2>
+    <div id="adminProductList"></div>
   </div>
 </div>
 </div>
@@ -137,9 +138,11 @@
 let products = JSON.parse(localStorage.getItem('products')) || [];
 let orders = JSON.parse(localStorage.getItem('orders')) || [];
 let currentUser = localStorage.getItem('currentUser');
-let ADMIN_PASS = "niyaZ@123"; // এইটা চেঞ্জ করো
+let ADMIN_PASS = "niyaZ@123"; 
 
-// Check Login
+// Load Logo on Start
+document.getElementById('siteLogo').src = localStorage.getItem('siteLogo') || 'https://i.ibb.co/93GhCsTx/xxx.jpg';
+
 if(currentUser){ showCustomer(); loadProducts(); loadOrders(); }
 
 function showRegister(){ document.getElementById('loginForm').classList.add('hidden'); document.getElementById('registerForm').classList.remove('hidden'); }
@@ -172,6 +175,7 @@ function showAdmin(){
   if(pass == ADMIN_PASS){
     document.getElementById('customerPanel').classList.add('hidden');
     document.getElementById('adminPanel').classList.remove('hidden');
+    loadAdminProducts();
   }
 }
 function backToCustomer(){ 
@@ -181,6 +185,7 @@ function backToCustomer(){
 
 function addProduct(){
   let p = {
+    id: Date.now(),
     name: document.getElementById('pName').value,
     price: document.getElementById('pPrice').value,
     img: document.getElementById('pImg').value,
@@ -189,13 +194,27 @@ function addProduct(){
   products.push(p);
   localStorage.setItem('products', JSON.stringify(products));
   alert('Product Added!');
+  document.getElementById('pName').value = '';
   loadProducts();
+  loadAdminProducts();
 }
+
+// NEW: DELETE PRODUCT
+function deleteProduct(id){
+  if(confirm("এই প্রোডাক্ট Delete করবা?")){
+    products = products.filter(p => p.id != id);
+    localStorage.setItem('products', JSON.stringify(products));
+    loadProducts();
+    loadAdminProducts();
+    alert("Delete Success");
+  }
+}
+
 function loadProducts(){
   let html = '';
   products.forEach((p,i)=>{
     html += `<div class="card">
-      <img src="${p.img}">
+      <img src="${p.img}" onerror="this.src='https://via.placeholder.com/150/111/fff?text=No+Image'">
       <div class="card-body">
         <div class="card-title">${p.name}</div>
         <div class="price">${p.price}৳</div>
@@ -205,6 +224,18 @@ function loadProducts(){
     </div>`;
   });
   document.getElementById('productList').innerHTML = html;
+}
+
+// NEW: ADMIN PRODUCT LIST WITH DELETE BUTTON
+function loadAdminProducts(){
+  let html = '';
+  products.forEach((p,i)=>{
+    html += `<div style="background:#111827;padding:10px;border-radius:8px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;">
+      <span>${p.name} - ${p.price}৳</span>
+      <button class="btn-red" onclick="deleteProduct(${p.id})">Delete</button>
+    </div>`;
+  });
+  document.getElementById('adminProductList').innerHTML = html || 'কোনো প্রোডাক্ট নাই';
 }
 
 function openPopup(name, price){
@@ -229,8 +260,13 @@ function loadOrders(){
   orders.forEach(o=>{ html += `<p><b>${o.name}</b> - ${o.price}৳ <br>Trx: ${o.trx} <br><small>${o.date}</small><hr></p>`; });
   document.getElementById('orderList').innerHTML = html;
 }
+
+// NEW: LOGO SAVE IN LOCALSTORAGE
 function changeLogo(){
-  document.getElementById('siteLogo').src = document.getElementById('logoLink').value;
+  let newLogo = document.getElementById('logoLink').value;
+  localStorage.setItem('siteLogo', newLogo);
+  document.getElementById('siteLogo').src = newLogo;
+  alert('Logo Updated & Saved!');
 }
 </script>
 
